@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priyanshu — Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0e;
+    --surface: #111114;
+    --border: #1e1e24;
+    --text: #c9c9d4;
+    --muted: #55555f;
+    --accent: #e8e8f0;
+    --green: #4ade80;
+    --dim-green: #1a3a26;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 640px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 2.5rem;
+    position: relative;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0.5;
+    animation: scanline 3s ease-in-out infinite;
+  }
+
+  @keyframes scanline {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
+  .name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .tag {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.65rem;
+    color: var(--green);
+    letter-spacing: 0.05em;
+  }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .section {
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.6s ease both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.15s; }
+  .section:nth-child(3) { animation-delay: 0.22s; }
+  .section:nth-child(4) { animation-delay: 0.29s; }
+  .section:nth-child(5) { animation-delay: 0.36s; }
+  .section:nth-child(6) { animation-delay: 0.43s; }
+
+  .label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .bio {
+    font-size: 0.8rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  .bio span {
+    color: var(--accent);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .chip {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    transition: border-color 0.2s, color 0.2s;
+    cursor: default;
+  }
+
+  .chip:hover {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .chip.active {
+    border-color: #2a2a35;
+    background: #16161d;
+    color: var(--text);
+  }
+
+  .setup {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+
+  .setup strong {
+    color: var(--text);
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+
+  .link {
+    display: block;
+    text-align: center;
+    font-size: 0.63rem;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .link::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--green);
+    transition: width 0.25s ease;
+  }
+
+  .link:hover {
+    color: var(--accent);
+    border-color: #2a2a38;
+  }
+
+  .link:hover::before {
+    width: 100%;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.6rem;
+    color: var(--muted);
+    animation: fadeUp 0.6s 0.5s ease both;
+    opacity: 0;
+    animation-fill-mode: forwards;
+  }
+
+  .eth {
+    font-size: 0.58rem;
+    color: #333340;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: color 0.3s;
+    cursor: default;
+  }
+
+  .eth:hover {
+    color: var(--muted);
+  }
+
+  .support-link {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .support-link:hover {
+    color: var(--green);
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="header">
+    <div>
+      <div class="name">Priyanshu</div>
+      <div class="tag">ECE · Year 01 · India</div>
+    </div>
+    <div class="status">
+      <div class="dot"></div>
+      online
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">about</div>
+    <div class="bio">
+      Writing code since <span>8th grade</span>. Started with Python, now mostly
+      <span>C++, JS, HTML/CSS</span>. Solid in <span>DSA</span> and <span>System Design</span> — 400+ LeetCode problems.
+      Currently picking up <span>Java + React</span>. Rust is next.
+      Visual side of building interests me as much as the technical.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">stack</div>
+    <div class="stack">
+      <span class="chip active">Python</span>
+      <span class="chip active">C++</span>
+      <span class="chip active">JavaScript</span>
+      <span class="chip active">HTML/CSS</span>
+      <span class="chip active">DSA</span>
+      <span class="chip active">System Design</span>
+      <span class="chip">Java</span>
+      <span class="chip">React</span>
+      <span class="chip">Rust</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">setup</div>
+    <div class="setup">
+      <strong>OS</strong> · Ubuntu Linux (3 yrs daily driver) &nbsp;·&nbsp;
+      <strong>Editor</strong> · VS Code &nbsp;·&nbsp;
+      <strong>Shell</strong> · Bash / GNOME Terminal
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">elsewhere</div>
+    <div class="links">
+      <a class="link" href="https://twitter.com/priyanshudevs" target="_blank">Twitter</a>
+      <a class="link" href="https://instagram.com/priiyanshudev" target="_blank">Instagram</a>
+      <a class="link" href="https://linkedin.com/in/priyanshudev1" target="_blank">LinkedIn</a>
+      <a class="link" href="https://leetcode.com/priyanshudev" target="_blank">LeetCode</a>
+      <a class="link" href="mailto:priyanshu.dev.in@gmail.com" target="_blank">Mail</a>
+      <a class="link" href="https://buymeacoffee.com/priyanshudev" target="_blank">Support</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">interests</div>
+    <div class="stack">
+      <span class="chip active">Video Editing</span>
+      <span class="chip active">Gym</span>
+      <span class="chip active">Cats</span>
+      <span class="chip active">Animals</span>
+      <span class="chip active">Nature</span>
+      <span class="chip active">German Language Learner</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>cat owner. animal lover. nature enjoyer.</span>
+    <span class="eth" title="ETH">0xc388b454...aEbab</span>
+  </div>
+
+</div>
+
+</body>
+</html>
