@@ -593,7 +593,9 @@ async function loadProjects() {
   const container = document.getElementById('projects-container');
 
   try {
-    const res = await fetch('https://notion-ppljz1ohi-priyanshu-devs-projects.vercel.app/api/projects');
+    const res = await fetch('https://notion-45kc5gyq-priyanshu-devs-projects.vercel.app/api/projects', {
+  cache: "no-store"
+});
     const data = await res.json();
 
     if (!data || data.length === 0) {
