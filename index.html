@@ -390,14 +390,18 @@ footer .copy { font-family:'JetBrains Mono',monospace; color:#252525; font-size:
   </section>
 
   <!-- PROJECTS -->
-  <section class="s6">
-    <div class="section-label">My Projects</div>
-    <div class="proj-placeholder">
-      <div class="coming-soon">coming soon...</div>
-      <p>Currently cooking something. Check back later — it'll be worth the wait.</p>
-      <div class="code-comment">/* projects[] = under construction */</div>
+<!-- PROJECTS -->
+<section class="s6">
+  <div class="section-label">My Projects</div>
+
+  <div id="projects-container" style="display:flex;flex-direction:column;gap:12px">
+
+    <div style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:0.8rem">
+      Loading projects...
     </div>
-  </section>
+
+  </div>
+</section>
 
   <!-- CONNECT -->
   <section class="s7">
@@ -583,6 +587,65 @@ async function loadGithub() {
   }
 }
 loadGithub();
+</script>
+
+  <script>
+async function loadProjects() {
+  const container = document.getElementById('projects-container');
+
+  try {
+    const res = await fetch('https://notion-api-ruddy.vercel.app/api/projects');
+    const data = await res.json();
+
+    if (!data || data.length === 0) {
+      container.innerHTML = `<div style="color:var(--muted)">No projects found</div>`;
+      return;
+    }
+
+    container.innerHTML = data.map(project => {
+      const name = project.properties?.Name?.title?.[0]?.plain_text || "Untitled";
+      const desc = project.properties?.Description?.rich_text?.[0]?.plain_text || "No description";
+      const github = project.properties?.GitHub?.url || "#";
+      const live = project.properties?.["Live Link"]?.url || "#";
+      const tech = project.properties?.Tech?.multi_select?.map(t => t.name).join(", ") || "";
+
+      return `
+        <div style="
+          background:var(--card);
+          border:1px solid var(--border);
+          border-radius:12px;
+          padding:16px;
+          transition:0.2s;
+        " onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='var(--border)'">
+
+          <div style="font-family:'JetBrains Mono';color:var(--white);font-size:0.95rem;margin-bottom:4px">
+            ${name}
+          </div>
+
+          <div style="color:var(--muted);font-size:0.8rem;margin-bottom:10px">
+            ${desc}
+          </div>
+
+          <div style="font-size:0.7rem;color:#555;margin-bottom:10px">
+            ${tech}
+          </div>
+
+          <div style="display:flex;gap:10px">
+            ${github !== "#" ? `<a href="${github}" target="_blank" class="btn">GitHub</a>` : ""}
+            ${live !== "#" ? `<a href="${live}" target="_blank" class="btn">Live</a>` : ""}
+          </div>
+
+        </div>
+      `;
+    }).join('');
+
+  } catch (err) {
+    container.innerHTML = `<div style="color:red">Failed to load projects</div>`;
+    console.error(err);
+  }
+}
+
+loadProjects();
 </script>
 </body>
 </html>
